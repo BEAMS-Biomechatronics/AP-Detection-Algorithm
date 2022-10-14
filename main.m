@@ -38,6 +38,41 @@ data_signal.time = time;
 n_tot_spikes = size(data_spikes.values_averaged, 1);
 disp('Total detected spikes : ' + string(n_tot_spikes)); 
 
+%% Generic plot 
+figure; plot(time, gen_filt_data, 'b'); hold on;
+numb_spikes = size(data_spikes.values_averaged, 1);
+if numb_spikes > 3000
+    numb_spikes = 3000;
+end
+for i_spike = 1 : numb_spikes
+    if data_spikes.template(i_spike) == 1
+        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'g');
+    elseif data_spikes.template(i_spike) == 2
+        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'r');
+    elseif data_spikes.template(i_spike) == 3
+        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'm');
+    elseif data_spikes.template(i_spike) == 4
+        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'k');
+    else
+        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'color', [0.8500 0.3250 0.0980]);
+    end
+end
+% plot(data_window.step_time, data_window.spikes_frequency-mean(data_window.spikes_frequency), 'color', [0.8500 0.3250 0.0980]); %% orange
+% plot(data_window.step_time, data_window.mean_amplitude, 'color', [0.4940 0.1840 0.5560]); %% purple
+% plot(time, rms_gen, 'color', '#03fc0f' )
+% plot(time, raw_data, 'r');
+title('Second detection with specific templates - B: gen filt data - R: spikes template monophasic - G: spikes template biphasic - Total spikes detected : ' + string(n_tot_spikes));
+xlabel('Time (s)');
+ylabel('Amplitude (µV)');
+
+save_data(data_to_use, data_spikes, data_window, data_signal, clusters, params);
+
+disp('Saved --- Well played BG !')
+
+
+
+%%%%% IF YOU WANT THE UNFILTERED PLOT %%%%%
+
 %% Unfiltered plot 
 % time = [1:length(raw_data)]/fs;
 % figure; plot(time, raw_data, 'b'); hold on;
@@ -71,71 +106,3 @@ disp('Total detected spikes : ' + string(n_tot_spikes));
 % title('Second detection with specific templates - B: raw data - R: spikes template 1 - G: spikes template 1 - Total spikes detected : ' + string(n_tot_spikes));
 % xlabel('Time (s)');
 % ylabel('Amplitude (µV)');
-
-%% Generic plot 
-figure; plot(time, gen_filt_data, 'b'); hold on;
-numb_spikes = size(data_spikes.values_averaged, 1);
-if numb_spikes > 3000
-    numb_spikes = 3000;
-end
-for i_spike = 1 : numb_spikes
-    if data_spikes.template(i_spike) == 1
-        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'g');
-    elseif data_spikes.template(i_spike) == 2
-        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'r');
-    elseif data_spikes.template(i_spike) == 3
-        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'm');
-    elseif data_spikes.template(i_spike) == 4
-        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'k');
-    else
-        plot(data_spikes.times(i_spike,:), data_spikes.values(i_spike,:), 'color', [0.8500 0.3250 0.0980]);
-    end
-end
-% plot(data_window.step_time, data_window.spikes_frequency-mean(data_window.spikes_frequency), 'color', [0.8500 0.3250 0.0980]); %% orange
-% plot(data_window.step_time, data_window.mean_amplitude, 'color', [0.4940 0.1840 0.5560]); %% purple
-% plot(time, rms_gen, 'color', '#03fc0f' )
-% plot(time, raw_data, 'r');
-title('Second detection with specific templates - B: gen filt data - R: spikes template monophasic - G: spikes template biphasic - Total spikes detected : ' + string(n_tot_spikes));
-% ylim([-170, 170]);
-xlabel('Time (s)');
-ylabel('Amplitude (µV)');
-% % ylabel('Amplitude (µV) - freqz(imp/sec) - energy (1/10 times scale)');
-
-%% Specific plot
-% time = [1:length(spec_filt_data)]/fs;
-% figure; plot(time, spec_filt_data, 'b'); hold on;
-% for i = 1 : size(generic_templates, 2)
-%     if i == 1
-%         numb_spikes = size(spec_detected_spikes(i).spec_values, 1);
-%         if numb_spikes >5000
-%             numb_spikes = 5000;
-%         end
-%         for i_spike = 1 : numb_spikes
-%             plot(spec_detected_spikes(i).times(i_spike,:), spec_detected_spikes(i).spec_values(i_spike,:), 'g');
-%         end
-%     elseif i == 2
-%         numb_spikes = size(spec_detected_spikes(i).spec_values, 1);
-%         if numb_spikes >5000
-%             numb_spikes = 5000;
-%         end
-%         for i_spike = 1 : numb_spikes
-%             plot(spec_detected_spikes(i).times(i_spike,:), spec_detected_spikes(i).spec_values(i_spike,:), 'r');
-%         end
-%     else
-%         numb_spikes = size(spec_detected_spikes(i).spec_values, 1);
-%         if numb_spikes >5000
-%             numb_spikes = 5000;
-%         end
-%         for i_spike = 1 : numb_spikes
-%             plot(spec_detected_spikes(i).times(i_spike,:), spec_detected_spikes(i).spec_values(i_spike,:), 'm');
-%         end
-%     end
-% end
-% title('Second detection with specific templates - B: spec filt data - R: spikes template 1 - G: spikes template 1 - Total spikes detected : ' + string(n_tot_spikes));
-% ylim([-20, 20]);
-% xlabel('Time (s)');
-% ylabel('Amplitude (µV)');
-
-save_data(data_to_use, data_spikes, data_window, data_signal, clusters, params);
-
-disp('Saved --- Well played BG !')

@@ -33,6 +33,8 @@ raw_data = raw_data(strt:stp);
 [b_gen, a_gen] = butter(params.filter_order, params.band_gen/(fs/2));
 [b_spec, a_spec] = butter(params.filter_order, params.band_spec/(fs/2));
 
+%%% IF THE SIGNAL IS ALREADY FILTERED, COMMENT FIRST TWO LINES AND
+%%% UNCOMMENT THE THRID AND FOURTH ONES
 gen_filt_data(:,1) = filtfilt(b_gen, a_gen, raw_data);
 spec_filt_data(:,1) = filtfilt(b_spec, a_spec, raw_data);
 % gen_filt_data(:,1) = raw_data;
